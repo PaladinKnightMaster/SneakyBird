@@ -9,9 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.4.0",
+    "@chakra-ui/react": "^1.8.7",
+    "@emotion/css": "^11.7.1",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.5.0",
+    "@walletconnect/web3-provider": "^1.7.7",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.2",
+    "framer-motion": "^6.2.8",
+    "hardhat": "^2.9.2",
+    "ipfs-http-client": "^56.0.1",
     "next": "12.1.2",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "react-markdown": "^8.0.1",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "eslint": "8.12.0",
