@@ -1,0 +1,3 @@
+{
+  "(pages|components|styles)/**": "npm run eslint"
+}
