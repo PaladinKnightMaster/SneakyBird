@@ -1,10 +1,17 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { networkConfig } = require("../helper-hardhat-config");
+
+
 
 describe("SneakyBird", function () {
-  it("Should create an NFT", async function () {
+  it("Should Deploy the SneakyBird Contract and pass the VRFCoordinator args to the constructor", async function () {
     const SneakyBird = await ethers.getContractFactory("SneakyBird");
-    const sneakybird = await SneakyBird.deploy();
+    const sneakybird = await SneakyBird.deploy(
+      networkConfig[network.config.chainId]["vrfCoordinator"],
+      networkConfig[network.config.chainId]["linkToken"],
+      networkConfig[network.config.chainId]["keyHash"]
+    );
     await sneakybird.deployed();
 
     // Still worling on the contract... need to finish these tests:

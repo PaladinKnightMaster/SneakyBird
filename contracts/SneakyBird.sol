@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.8.3;
 
-// import "@openzeppelin/contracts/token/ERC721/ERC721Storage.sol";
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 // import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
@@ -28,14 +27,12 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
     GOLD
   }
 
-  constructor()
-    VRFConsumerBase(
-      0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B,
-      0x01BE23585060835E02B77ef475b0Cc51aA1e0709
-    )
-    ERC721('Mushrooms', 'MUSH')
-  {
-    keyHash = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;
+  constructor(
+    address _VRFCoordinator,
+    address _LinkToken,
+    bytes32 _keyhash
+  ) VRFConsumerBase(_VRFCoordinator, _LinkToken) ERC721('Mushrooms', 'MUSH') {
+    keyHash = _keyhash;
     fee = 0.1 * 10**18; // 0.1 LINK
     mintPrice = 0.03 ether;
     tokenCounter = 0;
@@ -47,10 +44,6 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
   // it makes a requestRandomness to Chainlink VRF and the response is a callback to the next function called fulfillRandomness.
 
   function createNFT(string memory tokenURI) public returns (bytes32) {
-    // require(
-    //     LINK.balanceOf(address(this)) >= fee,
-    //     "Not enough LINK - Fill the NFT contract with that LINK Coin"
-    // );
     bytes32 requestId = requestRandomness(keyHash, fee);
     requestIdToSender[requestId] = msg.sender;
     requestIdToTokenURI[requestId] = tokenURI;

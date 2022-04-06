@@ -1,23 +1,22 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const { networkConfig } = require("../helper-hardhat-config");
+
 
 async function main() {
 
   // We get the contract to deploy
   const SneakyBird = await hre.ethers.getContractFactory("SneakyBird");
-  const sneakyBird = await SneakyBird.deploy();
+  const sneakyBird = await SneakyBird.deploy(
+    networkConfig[network.config.chainId]["vrfCoordinator"],
+    networkConfig[network.config.chainId]["linkToken"],
+    networkConfig[network.config.chainId]["keyHash"]
+  );
 
   await sneakyBird.deployed();
 
   console.log("SneakyBird deployed to:", sneakyBird.address);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main()
   .then(() => process.exit(0))
   .catch((error) => {

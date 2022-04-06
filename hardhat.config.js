@@ -24,10 +24,16 @@ module.exports = {
     rinkeby: {
       url: process.env.NEXTJS_APP_RINKEBY_RPC_URL,
       accounts: [process.env.NEXTJS_APP_PRIVATE_KEY],
+      chainId: 4,
     }
   },
   etherscan: {
     apiKey: process.env.NEXTJS_APP_ETHERSCAN_KEY,
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts",
   }
-
 };
