@@ -1,3 +1,4 @@
+const { network } = require("hardhat");
 const hre = require("hardhat");
 const { networkConfig } = require("../helper-hardhat-config");
 
@@ -14,12 +15,13 @@ async function main() {
 
   await sneakyBird.deployed();
 
-  console.log("SneakyBird deployed to:", sneakyBird.address);
+  console.log("SneakyBird deployed to the", network.name, "network at:", sneakyBird.address);
 }
+
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
     process.exit(1);
-  });
+  }); 
