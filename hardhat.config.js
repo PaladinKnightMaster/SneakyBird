@@ -43,6 +43,13 @@ module.exports = {
             accounts: [process.env.NEXTJS_APP_PRIVATE_KEY],
             chainId: 4,
         },
+        local: {
+            url: 'http://127.0.0.1:7545',
+            accounts: [
+                'd6521de1e0347649436dcaff3cfbeb1037116e79fa179cbbc46decba0bfa0d05',
+                '2e6730003b9857a0686b5d35b0a67658c2de6be68c6167771d6dae2643cc7905',
+            ],
+        },
     },
     etherscan: {
         apiKey: process.env.NEXTJS_APP_ETHERSCAN_KEY,
