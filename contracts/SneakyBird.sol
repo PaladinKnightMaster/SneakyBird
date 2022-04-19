@@ -11,7 +11,7 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
   mapping(bytes32 => string) public requestIdToTokenURI;
   mapping(uint256 => Material) public tokenIdToMaterial;
   mapping(bytes32 => uint256) public requestIdToTokenId;
-  // event requestedNFT(bytes32 indexed requestId); // for testing purposes only
+  event requestedNFT(bytes32 indexed requestId); // for testing purposes only
 
   bytes32 internal keyHash; // Created Variables to interact with Chainlink VRF
   uint256 internal fee; // Created Variables to interact with Chainlink VRF
@@ -47,8 +47,8 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
     bytes32 requestId = requestRandomness(keyHash, fee);
     requestIdToSender[requestId] = msg.sender;
     requestIdToTokenURI[requestId] = tokenURI;
+    emit requestedNFT(requestId); // for testing purposes only
     return requestId;
-    // emit requestedNFT(requestId); // for testing purposes only
   }
 
   // Callback function used by the Chainlink VRF Contract to render a random number

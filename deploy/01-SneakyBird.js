@@ -1,14 +1,18 @@
-const { networkConfig, getNetworkIdFromName } = require('../helper-hardhat-config');
-
+const { networkConfig } = require('../helper-hardhat-config');
+const hre = require('hardhat');
 const contractName = 'SneakyBird';
 module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     const { deploy, log, get } = deployments;
+
     const { deployer } = await getNamedAccounts();
+
     const chainId = await getChainId();
+
     let linkTokenAddress;
     let vrfCoordinatorAddress;
+    const mockableChainIds = ['31337', '1337'];
 
-    if (chainId == 31337) {
+    if (mockableChainIds.includes(chainId)) {
         const linkToken = await get('LinkToken');
         const VRFCoordinatorMock = await get('VRFCoordinatorMock');
         linkTokenAddress = linkToken.address;
@@ -37,8 +41,13 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
     // fund with LINK
     const fundAmount = String(0.1 * 10 ** 18);
-    const linkTokenContract = await ethers.getContractFactory('LinkToken');
-    const linkToken = new ethers.Contract(linkTokenAddress, linkTokenContract.interface, signer);
+    const linkTokenContract = await hre.ethers.getContractFactory('LinkToken');
+    const linkToken = new hre.ethers.Contract(
+        linkTokenAddress,
+        linkTokenContract.interface,
+        signer,
+    );
+
     let fund_tx = await linkToken.transfer(SneakyBird.address, fundAmount);
     await fund_tx.wait(1);
 };

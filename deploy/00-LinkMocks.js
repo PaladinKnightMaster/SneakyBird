@@ -2,8 +2,10 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     const { deploy, log } = deployments;
     const { deployer } = await getNamedAccounts();
     const chainId = await getChainId();
+    const mockableChainIds = ['31337', '1337'];
+
     // If we are on a local development network, we need to deploy mocks!
-    if (chainId == 31337) {
+    if (mockableChainIds.includes(chainId)) {
         log('Local network detected! Deploying mocks...');
         const linkToken = await deploy('LinkToken', { from: deployer, log: true });
         await deploy('VRFCoordinatorMock', {
