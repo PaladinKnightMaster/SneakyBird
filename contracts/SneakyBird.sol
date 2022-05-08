@@ -38,6 +38,7 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
     tokenCounter = 0;
     maxSupply = 925; // Not being used yet
     maxPerWallet = 3; // Not being used yet
+    withdrawWallet = payable(msg.sender);
   }
 
   // This next function is the main function to create an NFT, once the function is called then...
