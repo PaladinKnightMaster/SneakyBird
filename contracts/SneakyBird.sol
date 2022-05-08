@@ -83,4 +83,8 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
     (bool success, ) = withdrawWallet.call{value: address(this).balance}('');
     require(success, 'Failed to Withdraw');
   }
+
+  function burn(uint256 tokenId) public {
+    _burn(tokenId);
+  }
 }
