@@ -8,6 +8,7 @@ import { useAppState } from '../../context/AppContext';
 import Web3Modal from 'web3modal';
 import { ethers } from 'ethers';
 import SneakyBird from '../../../artifacts/contracts/SneakyBird.sol/SneakyBird.json';
+import { default as environment } from '../../config/environment';
 
 export const providerOptions = {
     walletlink: {
@@ -44,7 +45,7 @@ function AppContainer({ Component, pageProps }) {
             const address = await signer.getAddress();
             const { name, chainId } = await web3Provider.getNetwork();
             const contract = new ethers.Contract(
-                '0x408937dB243A993928c857c8a59CAd4f0B816aF6',
+                environment.default.sneakyBird.contractAddress,
                 SneakyBird.abi,
                 signer,
             );

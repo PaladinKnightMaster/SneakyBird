@@ -1,4 +1,7 @@
 exports.default = {
+    sneakyBird: {
+        contractAddress: process.env.CONTRACT_ADDRESS,
+    },
     ethereum: {
         network: process.env.ETHEREUM_NETWORK,
         rpcUrl: process.env.RPC_URL,
