@@ -4,6 +4,7 @@ import { useAppState } from '../context/AppContext';
 import React, { useState } from 'react';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
+import { ethers } from 'ethers';
 
 const MintButton = styled(Button)`
     ${tw`px-10 py-3`}
@@ -18,10 +19,15 @@ const Page = () => {
     const [tempMintState, setTempMintState] = useState({});
 
     const mint = async () => {
-        await contract
-            .createNFT('testURI', { gasLimit: 2100000 })
-            .then(setTempMintState)
-            .catch(setTempMintState);
+        contract.on('requestedNFT', console.log);
+
+        const transaction = await contract
+            .createNFT(1, { value: ethers.utils.parseEther('0.03'), gasLimit: 2100000 })
+            .catch(console.error);
+
+        // console.log(transaction);
+        setTempMintState(transaction);
+        await transaction.wait().catch(console.log);
     };
 
     return (
