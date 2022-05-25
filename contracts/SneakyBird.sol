@@ -49,6 +49,7 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
     maxPerWallet = 3; // Not being used yet
     withdrawWallet = payable(msg.sender);
     goldToken = 0;
+    tokenCounter.increment();
   }
 
   function setGoldTokenUri(string memory uri) public onlyOwner {
@@ -86,27 +87,24 @@ contract SneakyBird is ERC721URIStorage, Ownable, VRFConsumerBase {
 
   function fulfillRandomness(bytes32 requestId, uint256 randomNumber) internal override {
     address mushroomOwner = requestIdToSender[requestId];
-    uint256 newItemId = tokenCounter.current();
+    uint256 newItemId = requestIdToTokenId[requestId];
 
     _safeMint(mushroomOwner, newItemId);
-    // Material material = Material(randomNumber % 2);
+    Material material = Material(randomNumber % 2);
 
-    // string memory tokenUri;
+    string memory tokenUri;
 
-    // if (material == Material.GOLD && goldToken < 6) {
-    //   tokenUri = goldTokenUri;
-    //   goldTokenOwnersList[newItemId] = payable(mushroomOwner);
-    //   goldToken + 1;
-    // } else {
-    //   tokenUri = silverTokenUri;
-    // }
+    if (material == Material.GOLD && goldToken < 6) {
+      tokenUri = 'https://sneakybird.infura-ipfs.io/ipfs/QmQqAiC5sERbsQJye9ZY4gaeXL5t1FHu3ryQRh1mMRfsHj';
+      goldTokenOwnersList[newItemId] = payable(mushroomOwner);
+      goldToken + 1;
+    } else {
+      tokenUri = 'https://sneakybird.infura-ipfs.io/ipfs/QmacJ1TaiPQNUtCBoVyaLhVMpXutwKx2dBemreBedH9TS6';
+    }
 
-    _setTokenURI(
-      newItemId,
-      'https://opensea.mypinata.cloud/ipfs/QmPoT69Lvf22EH3FufcK3d6KzyUmXoMeZYfHkUATQTPzPS'
-    );
-    // tokenIdToMaterial[newItemId] = material;
-    // requestIdToTokenId[requestId] = newItemId;
+    _setTokenURI(newItemId, tokenUri);
+    tokenIdToMaterial[newItemId] = material;
+    requestIdToTokenId[requestId] = newItemId;
   }
 
   function setTokenURI(
