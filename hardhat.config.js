@@ -3,9 +3,11 @@ require('@nomiclabs/hardhat-etherscan');
 require('@nomiclabs/hardhat-ethers');
 require('hardhat-deploy');
 require('dotenv-safe').config();
+const environment = require('./src/config/environment').default;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
+// eslint-disable-next-line no-undef
 task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
     const accounts = await hre.ethers.getSigners();
 
@@ -39,13 +41,20 @@ module.exports = {
     },
     networks: {
         rinkeby: {
-            url: process.env.NEXTJS_APP_RINKEBY_RPC_URL,
-            accounts: [process.env.NEXTJS_APP_PRIVATE_KEY],
+            url: environment.ethereum.rpcUrlRinkeby,
+            accounts: [environment.ethereum.privateKey],
             chainId: 4,
+        },
+        local: {
+            url: 'http://127.0.0.1:7545',
+            accounts: [
+                'd6521de1e0347649436dcaff3cfbeb1037116e79fa179cbbc46decba0bfa0d05',
+                '2e6730003b9857a0686b5d35b0a67658c2de6be68c6167771d6dae2643cc7905',
+            ],
         },
     },
     etherscan: {
-        apiKey: process.env.NEXTJS_APP_ETHERSCAN_KEY,
+        apiKey: environment.ethereum.etherscanKey,
     },
     namedAccounts: {
         deployer: {

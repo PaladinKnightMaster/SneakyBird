@@ -10,7 +10,17 @@ html,
 body,
 #__next {
   height: 100%;
+  background: #000000;
+  color: #ffffff;
+  background-image: url('/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: 40px;
 }
+
+/* body {
+  
+} */
 a {
   color: inherit;
   text-decoration: none;

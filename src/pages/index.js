@@ -1,62 +1,54 @@
-import { useState, useEffect, useMemo } from 'react';
-import { ethers } from 'ethers';
-import Web3Modal from 'web3modal';
-import WalletConnect from '@walletconnect/web3-provider';
-import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import tw, { styled } from 'twin.macro';
+import { useAppState } from '../context/AppContext';
 
-export const providerOptions = {
-    walletlink: {
-        package: CoinbaseWalletSDK, // Required
-        options: {
-            appName: 'Web 3 Modal Demo', // Required
-            infuraId: 'c1bc8f3b771c4cbeb01bd597a820a3fb', // Required unless you provide a JSON RPC url; see `rpc` below
-        },
-    },
-    walletconnect: {
-        package: WalletConnect, // required
-        options: {
-            infuraId: 'c1bc8f3b771c4cbeb01bd597a820a3fb', // required
-        },
-    },
-};
+import React, { useState } from 'react';
+import Logo from '../components/Logo';
+import Button from '../components/Button';
+import { ethers } from 'ethers';
+
+const MintButton = styled(Button)`
+    ${tw`px-10 py-3`}
+`;
 
 const Page = () => {
-    const [test, setTest] = useState();
+    const { state } = useAppState();
+    const { contract } = state;
 
-    const connectWallet = async () => {
-        try {
-            const web3Modal = new Web3Modal({
-                network: 'rinkeby', // optional
-                providerOptions,
-            });
-            const provider = await web3Modal.connect();
-            const library = new ethers.providers.Web3Provider(provider);
-            const accounts = await library.listAccounts();
-            const network = await library.getNetwork();
+    //TEMPORARY STATE
+    //TODO: REMOVE
+    const [tempMintState, setTempMintState] = useState({});
 
-            setTest({ accounts, network, chainId: network.chainId });
-        } catch (error) {
-            console.log(error);
-        }
+    const mint = async () => {
+        contract.on('requestedNFT', console.log);
+
+        const transaction = await contract
+            .createNFT(1, { value: ethers.utils.parseEther('0.03'), gasLimit: 2100000 })
+            .catch(console.error);
+
+        // console.log(transaction);
+        setTempMintState(transaction);
+        await transaction.wait().catch(console.log);
     };
 
-    if (!test?.accounts) {
-        return (
-            <div className="flex justify-center items-center h-full">
+    return (
+        <div className="px-10">
+            <div className="mt-[-20px]">
+                <Logo />
+            </div>
+
+            <h2 className="text-[40px] font-thin mt-[80px] text-center">
+                Our first limited edition NFT
+            </h2>
+
+            <div className="flex justify-center items-center mt-[20px]">
                 <div>
-                    <button
-                        className="block h-auto rounded px-5 py-3 bg-blue-500 text-white shadow-lg"
-                        type="button"
-                        onClick={connectWallet}
-                    >
-                        connect wallet
-                    </button>
+                    <MintButton onClick={mint}>Mint</MintButton>
                 </div>
             </div>
-        );
-    }
 
-    return <pre>{JSON.stringify(test, null, 2)}</pre>;
+            <pre>{JSON.stringify(tempMintState, null, 2)}</pre>
+        </div>
+    );
 };
 
 export default Page;
