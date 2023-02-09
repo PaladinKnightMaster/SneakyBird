@@ -1,6 +1,6 @@
 # ERC721 NTF Collection for Sneaky Bird
 
-This project uses Hardhat, NextJS, chai, chakra. Also, the VRF Coordinator contract to get a Random number to make a random NFT creation while minting. 
+This project uses Hardhat, NextJS, chai, chakra. Also, the VRF Coordinator contract from Chainlink to get a Random number and create a random NFT while minting is going on. 
 
 In this project, we'll only mint 925 ERC721 NFTs in total supply.
 
